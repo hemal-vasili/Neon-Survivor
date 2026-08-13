@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Neon Survivor</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
@@ -15,21 +13,12 @@
 body {
     margin: 0;
     min-height: 100vh;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
-    background:
-        radial-gradient(circle at center, #101827, #05070c);
-
+    background: #050810;
     color: white;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
+    font-family: Arial, sans-serif;
     overflow: hidden;
 }
 
@@ -39,165 +28,108 @@ body {
 
 canvas {
     display: block;
-
     width: 800px;
     height: 600px;
-
     max-width: 95vw;
     max-height: 90vh;
-
     background: #080d16;
-
     border: 2px solid #26364d;
-
     border-radius: 14px;
-
-    box-shadow:
-        0 0 30px rgba(0, 200, 255, 0.12);
 }
-
-/* HUD */
 
 #hud {
     position: absolute;
-
-    top: 15px;
+    top: 14px;
     left: 18px;
     right: 18px;
-
     display: flex;
     justify-content: space-between;
-
-    font-size: 18px;
-
-    font-weight: bold;
-
+    z-index: 5;
     pointer-events: none;
+    font-weight: bold;
+}
 
+#difficulty {
+    position: absolute;
+    top: 70px;
+    left: 18px;
+    font-size: 13px;
+    color: #aab5c7;
     z-index: 5;
 }
 
 #xpContainer {
     position: absolute;
-
-    top: 45px;
+    top: 44px;
     left: 18px;
     right: 18px;
-
-    height: 8px;
-
+    height: 7px;
     background: #202938;
-
-    border-radius: 20px;
-
+    border-radius: 10px;
     overflow: hidden;
-
     z-index: 5;
 }
 
 #xpBar {
-    width: 0%;
-
     height: 100%;
-
+    width: 0%;
     background: #4deaff;
-
-    transition: width 0.15s;
 }
-
-/* Overlay */
 
 #overlay {
     position: absolute;
-
     inset: 0;
-
     display: flex;
-
     justify-content: center;
     align-items: center;
-
-    background: rgba(2, 5, 10, 0.92);
-
+    background: rgba(2, 5, 10, 0.93);
     border-radius: 14px;
-
     z-index: 20;
 }
 
 .panel {
     width: min(90%, 430px);
-
     padding: 30px;
-
     text-align: center;
-
     background: #111927;
-
     border: 1px solid #34445c;
-
     border-radius: 18px;
-
-    box-shadow:
-        0 20px 60px rgba(0,0,0,.5);
 }
 
 .panel h1 {
     margin-top: 0;
-
-    font-size: 36px;
-
+    font-size: 34px;
     letter-spacing: 2px;
 }
 
 .panel p {
-    color: #aeb9c9;
-
+    color: #adb8c9;
     line-height: 1.6;
 }
 
 button {
     border: none;
-
     border-radius: 10px;
-
     padding: 13px 25px;
-
     margin: 6px;
-
     font-size: 16px;
-
     font-weight: bold;
-
     cursor: pointer;
-
     background: #4deaff;
-
     color: #061018;
-
-    transition:
-        transform .15s,
-        background .15s;
 }
 
 button:hover {
-    transform: translateY(-2px);
-
     background: #8af1ff;
 }
 
 .upgrade {
     display: block;
-
     width: 100%;
-
     margin: 9px 0;
-
     text-align: left;
-
     background: #1b2637;
-
     color: white;
-
     border: 1px solid #3c4d66;
 }
 
@@ -208,7 +140,6 @@ button:hover {
 .hidden {
     display: none !important;
 }
-
 </style>
 </head>
 
@@ -216,40 +147,29 @@ button:hover {
 
 <div id="gameContainer">
 
-    <canvas
-        id="game"
-        width="800"
-        height="600">
-    </canvas>
+    <canvas id="game" width="800" height="600"></canvas>
 
     <div id="hud">
-
-        <span id="score">
-            Score: 0
-        </span>
-
-        <span id="level">
-            Level 1
-        </span>
-
+        <span id="score">Score: 0</span>
+        <span id="level">Level 1</span>
     </div>
 
     <div id="xpContainer">
-
         <div id="xpBar"></div>
+    </div>
 
+    <div id="difficulty">
+        Difficulty: Easy
     </div>
 
     <div id="overlay">
 
         <div class="panel">
 
-            <h1 id="title">
-                NEON SURVIVOR
-            </h1>
+            <h1 id="title">NEON SURVIVOR</h1>
 
             <p id="message">
-                Survive as long as possible.<br>
+                Survive the arena.<br>
                 Move with WASD or Arrow Keys.
             </p>
 
@@ -257,48 +177,28 @@ button:hover {
                 START GAME
             </button>
 
-            <div
-                id="upgradeMenu"
-                class="hidden">
+            <div id="upgradeMenu" class="hidden">
 
-                <h2>
-                    LEVEL UP!
-                </h2>
+                <h2>LEVEL UP!</h2>
 
                 <p>
                     Choose one upgrade.
                 </p>
 
-                <button
-                    class="upgrade"
-                    data-upgrade="speed">
-
-                    ⚡ Increase Movement Speed
-
+                <button class="upgrade" data-upgrade="speed">
+                    ⚡ Movement Speed +15%
                 </button>
 
-                <button
-                    class="upgrade"
-                    data-upgrade="fire">
-
-                    🔥 Increase Fire Rate
-
+                <button class="upgrade" data-upgrade="fire">
+                    🔥 Fire Rate +15%
                 </button>
 
-                <button
-                    class="upgrade"
-                    data-upgrade="damage">
-
-                    💥 Increase Bullet Damage
-
+                <button class="upgrade" data-upgrade="damage">
+                    💥 Bullet Damage +1
                 </button>
 
-                <button
-                    class="upgrade"
-                    data-upgrade="health">
-
-                    ❤️ Increase Maximum Health
-
+                <button class="upgrade" data-upgrade="health">
+                    ❤️ Maximum Health +20
                 </button>
 
             </div>
@@ -311,38 +211,17 @@ button:hover {
 
 <script>
 
-/* =========================================================
-   CANVAS
-========================================================= */
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
 
-const canvas =
-    document.getElementById("game");
+const scoreText = document.getElementById("score");
+const levelText = document.getElementById("level");
+const xpBar = document.getElementById("xpBar");
+const difficultyText = document.getElementById("difficulty");
 
-const ctx =
-    canvas.getContext("2d");
-
-
-/* =========================================================
-   UI
-========================================================= */
-
-const scoreText =
-    document.getElementById("score");
-
-const levelText =
-    document.getElementById("level");
-
-const xpBar =
-    document.getElementById("xpBar");
-
-const overlay =
-    document.getElementById("overlay");
-
-const title =
-    document.getElementById("title");
-
-const message =
-    document.getElementById("message");
+const overlay = document.getElementById("overlay");
+const title = document.getElementById("title");
+const message = document.getElementById("message");
 
 const startButton =
     document.getElementById("startButton");
@@ -350,25 +229,15 @@ const startButton =
 const upgradeMenu =
     document.getElementById("upgradeMenu");
 
-
-/* =========================================================
-   GAME STATE
-========================================================= */
-
 let player;
-
 let enemies = [];
-
 let bullets = [];
-
 let particles = [];
 
 let keys = {};
 
 let score = 0;
-
 let xp = 0;
-
 let level = 1;
 
 let running = false;
@@ -376,69 +245,63 @@ let running = false;
 let lastTime = 0;
 
 let spawnTimer = 0;
-
 let shootTimer = 0;
 
+let gameTime = 0;
 
-/* =========================================================
+
+/* =========================
    PLAYER
-========================================================= */
+========================= */
 
 function createPlayer() {
 
     return {
-
         x: 400,
-
         y: 300,
 
         radius: 16,
 
-        speed: 260,
+        speed: 245,
 
         health: 120,
-
         maxHealth: 120,
 
         damage: 1,
 
-        fireRate: 280
+        fireRate: 320
     };
 }
 
 
-/* =========================================================
+/* =========================
    RESET
-========================================================= */
+========================= */
 
 function resetGame() {
 
-    player =
-        createPlayer();
+    player = createPlayer();
 
     enemies = [];
-
     bullets = [];
-
     particles = [];
 
     score = 0;
-
     xp = 0;
-
     level = 1;
 
-    spawnTimer = 0;
+    gameTime = 0;
 
+    spawnTimer = 500;
     shootTimer = 0;
 
     updateHUD();
 }
 
 
-/* =========================================================
+/* =========================
    START
-========================================================= */
+========================= */
 
 function startGame() {
 
@@ -448,130 +311,138 @@ function startGame() {
 
     overlay.classList.add("hidden");
 
-    lastTime =
-        performance.now();
+    lastTime = performance.now();
 
     requestAnimationFrame(gameLoop);
 }
 
 
-/* =========================================================
+/* =========================
    KEYBOARD
-========================================================= */
+========================= */
 
-document.addEventListener(
-    "keydown",
-    function(event) {
+document.addEventListener("keydown", event => {
 
-        keys[
-            event.key.toLowerCase()
-        ] = true;
+    keys[event.key.toLowerCase()] = true;
 
-    }
-);
+});
 
+document.addEventListener("keyup", event => {
 
-document.addEventListener(
-    "keyup",
-    function(event) {
+    keys[event.key.toLowerCase()] = false;
 
-        keys[
-            event.key.toLowerCase()
-        ] = false;
-
-    }
-);
+});
 
 
-/* =========================================================
+/* =========================
+   DIFFICULTY
+========================= */
+
+function getDifficulty() {
+
+    /*
+       Difficulty rises slowly.
+
+       0 = beginning
+       1 = after roughly 1 minute
+       2 = after roughly 2 minutes
+       etc.
+
+       Capped at 5.
+    */
+
+    return Math.min(
+        5,
+        gameTime / 60
+    );
+}
+
+
+function getDifficultyName() {
+
+    const d = getDifficulty();
+
+    if (d < 1)
+        return "Easy";
+
+    if (d < 2)
+        return "Normal";
+
+    if (d < 3)
+        return "Hard";
+
+    if (d < 4)
+        return "Very Hard";
+
+    return "INSANE";
+}
+
+
+/* =========================
    SPAWN ENEMY
-========================================================= */
+========================= */
 
 function spawnEnemy() {
 
-    let side =
-        Math.floor(
-            Math.random() * 4
-        );
+    const side =
+        Math.floor(Math.random() * 4);
 
     let x;
     let y;
 
     if (side === 0) {
 
-        x =
-            Math.random() * 800;
-
+        x = Math.random() * 800;
         y = -40;
 
-    }
-
-    else if (side === 1) {
+    } else if (side === 1) {
 
         x = 840;
+        y = Math.random() * 600;
 
-        y =
-            Math.random() * 600;
+    } else if (side === 2) {
 
-    }
-
-    else if (side === 2) {
-
-        x =
-            Math.random() * 800;
-
+        x = Math.random() * 800;
         y = 640;
 
-    }
-
-    else {
+    } else {
 
         x = -40;
-
-        y =
-            Math.random() * 600;
-
+        y = Math.random() * 600;
     }
 
 
-    /*
-       Difficulty increases with score.
-    */
-
     const difficulty =
-        1 + score / 250;
+        getDifficulty();
 
 
-    /*
-       Random enemy types.
-    */
-
-    const type =
+    const roll =
         Math.random();
 
 
     let enemy;
 
 
-    /* FAST ENEMY */
+    /*
+       FAST ENEMY
+    */
 
-    if (type < 0.25) {
+    if (roll < 0.20) {
 
         enemy = {
 
-            x: x,
-
-            y: y,
+            x,
+            y,
 
             radius: 11,
 
             speed:
-                180 +
-                difficulty * 20,
+                105 +
+                difficulty * 10,
 
             health: 1,
 
-            damage: 45,
+            damage: 28,
 
             type: "fast"
         };
@@ -579,29 +450,30 @@ function spawnEnemy() {
     }
 
 
-    /* NORMAL ENEMY */
+    /*
+       NORMAL ENEMY
+    */
 
-    else if (type < 0.85) {
+    else if (roll < 0.90) {
 
         enemy = {
 
-            x: x,
-
-            y: y,
+            x,
+            y,
 
             radius: 15,
 
             speed:
-                145 +
-                difficulty * 18,
+                78 +
+                difficulty * 9,
 
             health:
                 1 +
                 Math.floor(
-                    difficulty / 4
+                    difficulty / 2
                 ),
 
-            damage: 35,
+            damage: 25,
 
             type: "normal"
         };
@@ -609,33 +481,33 @@ function spawnEnemy() {
     }
 
 
-    /* TANK ENEMY */
+    /*
+       TANK
+    */
 
     else {
 
         enemy = {
 
-            x: x,
-
-            y: y,
+            x,
+            y,
 
             radius: 23,
 
             speed:
-                90 +
-                difficulty * 12,
+                52 +
+                difficulty * 6,
 
             health:
                 4 +
                 Math.floor(
-                    difficulty / 2
+                    difficulty
                 ),
 
-            damage: 60,
+            damage: 38,
 
             type: "tank"
         };
-
     }
 
 
@@ -643,9 +515,9 @@ function spawnEnemy() {
 }
 
 
-/* =========================================================
+/* =========================
    SHOOT
-========================================================= */
+========================= */
 
 function shoot() {
 
@@ -653,10 +525,9 @@ function shoot() {
         return;
 
 
-    let closest = null;
+    let target = null;
 
-    let closestDistance =
-        Infinity;
+    let nearest = Infinity;
 
 
     for (const enemy of enemies) {
@@ -668,42 +539,36 @@ function shoot() {
             );
 
 
-        if (
-            distance <
-            closestDistance
-        ) {
+        if (distance < nearest) {
 
-            closestDistance =
-                distance;
+            nearest = distance;
 
-            closest =
-                enemy;
+            target = enemy;
         }
     }
 
 
-    if (!closest)
+    if (!target)
         return;
 
 
     const angle =
         Math.atan2(
-            closest.y - player.y,
-            closest.x - player.x
+            target.y - player.y,
+            target.x - player.x
         );
 
 
     bullets.push({
 
         x: player.x,
-
         y: player.y,
 
         vx:
-            Math.cos(angle) * 650,
+            Math.cos(angle) * 620,
 
         vy:
-            Math.sin(angle) * 650,
+            Math.sin(angle) * 620,
 
         radius: 5,
 
@@ -713,186 +578,50 @@ function shoot() {
 }
 
 
-/* =========================================================
-   LEVEL SYSTEM
-========================================================= */
-
-function checkLevelUp() {
-
-    const requiredXP =
-        level * 100;
-
-
-    if (xp >= requiredXP) {
-
-        xp -= requiredXP;
-
-        level++;
-
-        running = false;
-
-        showUpgrade();
-    }
-}
-
-
-/* =========================================================
-   UPGRADE MENU
-========================================================= */
-
-function showUpgrade() {
-
-    overlay.classList.remove(
-        "hidden"
-    );
-
-    title.textContent =
-        "LEVEL UP!";
-
-    message.textContent =
-        "Choose your upgrade.";
-
-    startButton.classList.add(
-        "hidden"
-    );
-
-    upgradeMenu.classList.remove(
-        "hidden"
-    );
-}
-
-
-/* =========================================================
-   UPGRADES
-========================================================= */
-
-document
-.querySelectorAll(".upgrade")
-.forEach(button => {
-
-    button.addEventListener(
-        "click",
-        function() {
-
-            const type =
-                button.dataset.upgrade;
-
-
-            if (type === "speed") {
-
-                player.speed *= 1.2;
-
-            }
-
-
-            if (type === "fire") {
-
-                player.fireRate *= 0.8;
-
-            }
-
-
-            if (type === "damage") {
-
-                player.damage += 1;
-
-            }
-
-
-            if (type === "health") {
-
-                player.maxHealth += 25;
-
-                player.health += 25;
-
-            }
-
-
-            upgradeMenu.classList.add(
-                "hidden"
-            );
-
-            overlay.classList.add(
-                "hidden"
-            );
-
-            running = true;
-
-            lastTime =
-                performance.now();
-
-            requestAnimationFrame(
-                gameLoop
-            );
-
-        }
-    );
-
-});
-
-
-/* =========================================================
-   UPDATE PLAYER
-========================================================= */
+/* =========================
+   PLAYER UPDATE
+========================= */
 
 function updatePlayer(dt) {
 
     let dx = 0;
-
     let dy = 0;
 
 
     if (
         keys["w"] ||
         keys["arrowup"]
-    ) {
-
+    )
         dy--;
-
-    }
 
 
     if (
         keys["s"] ||
         keys["arrowdown"]
-    ) {
-
+    )
         dy++;
-
-    }
 
 
     if (
         keys["a"] ||
         keys["arrowleft"]
-    ) {
-
+    )
         dx--;
-
-    }
 
 
     if (
         keys["d"] ||
         keys["arrowright"]
-    ) {
-
+    )
         dx++;
 
-    }
 
-
-    if (dx !== 0 || dy !== 0) {
+    if (dx || dy) {
 
         const length =
-            Math.hypot(
-                dx,
-                dy
-            );
-
+            Math.hypot(dx, dy);
 
         dx /= length;
-
         dy /= length;
 
 
@@ -906,7 +635,6 @@ function updatePlayer(dt) {
             dy *
             player.speed *
             dt;
-
     }
 
 
@@ -931,9 +659,9 @@ function updatePlayer(dt) {
 }
 
 
-/* =========================================================
-   UPDATE ENEMIES
-========================================================= */
+/* =========================
+   ENEMY UPDATE
+========================= */
 
 function updateEnemies(dt) {
 
@@ -943,8 +671,7 @@ function updateEnemies(dt) {
         i--
     ) {
 
-        const enemy =
-            enemies[i];
+        const enemy = enemies[i];
 
 
         const angle =
@@ -979,53 +706,47 @@ function updateEnemies(dt) {
             enemy.radius
         ) {
 
+            /*
+               Damage is continuous,
+               but intentionally low.
+            */
+
             player.health -=
                 enemy.damage *
                 dt;
 
 
             /*
-               Knock enemy slightly
-               backwards to prevent
-               instant stacking.
+               Push enemies slightly away
+               from the player so they don't
+               stack perfectly on top of each other.
             */
 
-            const pushX =
-                enemy.x -
-                player.x;
+            const px =
+                enemy.x - player.x;
 
-            const pushY =
-                enemy.y -
-                player.y;
+            const py =
+                enemy.y - player.y;
 
-
-            const pushLength =
-                Math.hypot(
-                    pushX,
-                    pushY
-                );
+            const length =
+                Math.hypot(px, py);
 
 
-            if (pushLength > 0) {
+            if (length > 0) {
 
                 enemy.x +=
-                    pushX /
-                    pushLength *
-                    25 *
+                    (px / length) *
+                    30 *
                     dt;
 
                 enemy.y +=
-                    pushY /
-                    pushLength *
-                    25 *
+                    (py / length) *
+                    30 *
                     dt;
-
             }
 
 
-            if (
-                player.health <= 0
-            ) {
+            if (player.health <= 0) {
 
                 gameOver();
 
@@ -1036,9 +757,9 @@ function updateEnemies(dt) {
 }
 
 
-/* =========================================================
-   UPDATE BULLETS
-========================================================= */
+/* =========================
+   BULLET UPDATE
+========================= */
 
 function updateBullets(dt) {
 
@@ -1048,18 +769,14 @@ function updateBullets(dt) {
         i--
     ) {
 
-        const bullet =
-            bullets[i];
+        const bullet = bullets[i];
 
 
         bullet.x +=
-            bullet.vx *
-            dt;
-
+            bullet.vx * dt;
 
         bullet.y +=
-            bullet.vy *
-            dt;
+            bullet.vy * dt;
 
 
         if (
@@ -1081,8 +798,7 @@ function updateBullets(dt) {
             j--
         ) {
 
-            const enemy =
-                enemies[j];
+            const enemy = enemies[j];
 
 
             const distance =
@@ -1105,28 +821,30 @@ function updateBullets(dt) {
                 bullets.splice(i, 1);
 
 
-                if (
-                    enemy.health <= 0
-                ) {
+                if (enemy.health <= 0) {
 
-                    enemies.splice(
-                        j,
-                        1
-                    );
+                    enemies.splice(j, 1);
 
 
-                    score +=
+                    if (
                         enemy.type === "tank"
-                            ? 30
-                            : enemy.type === "fast"
-                                ? 15
-                                : 10;
+                    ) {
 
+                        score += 30;
+                        xp += 30;
 
-                    xp +=
-                        enemy.type === "tank"
-                            ? 30
-                            : 15;
+                    } else if (
+                        enemy.type === "fast"
+                    ) {
+
+                        score += 15;
+                        xp += 15;
+
+                    } else {
+
+                        score += 10;
+                        xp += 10;
+                    }
 
 
                     createExplosion(
@@ -1136,7 +854,6 @@ function updateBullets(dt) {
 
 
                     checkLevelUp();
-
                 }
 
 
@@ -1147,18 +864,184 @@ function updateBullets(dt) {
 }
 
 
-/* =========================================================
-   PARTICLES
-========================================================= */
+/* =========================
+   SPAWN CONTROL
+========================= */
 
-function createExplosion(
-    x,
-    y
-) {
+function updateSpawning(dt) {
+
+    spawnTimer -=
+        dt * 1000;
+
+
+    if (spawnTimer <= 0) {
+
+        spawnEnemy();
+
+
+        const difficulty =
+            getDifficulty();
+
+
+        /*
+           Starts around 1000ms.
+
+           Eventually reaches 400ms.
+
+           This prevents the impossible
+           enemy swarm from the previous version.
+        */
+
+        spawnTimer =
+            Math.max(
+                400,
+                1000 -
+                difficulty * 100
+            );
+    }
+}
+
+
+/* =========================
+   SHOOT CONTROL
+========================= */
+
+function updateShooting(dt) {
+
+    shootTimer -=
+        dt * 1000;
+
+
+    if (shootTimer <= 0) {
+
+        shoot();
+
+        shootTimer =
+            player.fireRate;
+    }
+}
+
+
+/* =========================
+   LEVEL UP
+========================= */
+
+function checkLevelUp() {
+
+    const required =
+        level * 100;
+
+
+    if (xp >= required) {
+
+        xp -= required;
+
+        level++;
+
+        running = false;
+
+        showUpgrade();
+    }
+}
+
+
+function showUpgrade() {
+
+    overlay.classList.remove(
+        "hidden"
+    );
+
+    title.textContent =
+        "LEVEL UP!";
+
+    message.textContent =
+        "Choose an upgrade.";
+
+    startButton.classList.add(
+        "hidden"
+    );
+
+    upgradeMenu.classList.remove(
+        "hidden"
+    );
+}
+
+
+/* =========================
+   UPGRADES
+========================= */
+
+document
+.querySelectorAll(".upgrade")
+.forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            const type =
+                button.dataset.upgrade;
+
+
+            if (type === "speed") {
+
+                player.speed *= 1.15;
+            }
+
+
+            if (type === "fire") {
+
+                player.fireRate *= 0.85;
+            }
+
+
+            if (type === "damage") {
+
+                player.damage++;
+            }
+
+
+            if (type === "health") {
+
+                player.maxHealth += 20;
+
+                player.health += 20;
+            }
+
+
+            upgradeMenu.classList.add(
+                "hidden"
+            );
+
+            overlay.classList.add(
+                "hidden"
+            );
+
+
+            running = true;
+
+            lastTime =
+                performance.now();
+
+
+            requestAnimationFrame(
+                gameLoop
+            );
+        }
+    );
+
+});
+
+
+/* =========================
+   PARTICLES
+========================= */
+
+function createExplosion(x, y) {
 
     for (
         let i = 0;
-        i < 10;
+        i < 8;
         i++
     ) {
 
@@ -1171,14 +1054,13 @@ function createExplosion(
         const speed =
             50 +
             Math.random() *
-            120;
+            80;
 
 
         particles.push({
 
-            x: x,
-
-            y: y,
+            x,
+            y,
 
             vx:
                 Math.cos(angle) *
@@ -1188,8 +1070,7 @@ function createExplosion(
                 Math.sin(angle) *
                 speed,
 
-            life: .5
-
+            life: 0.4
         });
     }
 }
@@ -1208,125 +1089,56 @@ function updateParticles(dt) {
 
 
         particle.x +=
-            particle.vx *
-            dt;
-
+            particle.vx * dt;
 
         particle.y +=
-            particle.vy *
-            dt;
+            particle.vy * dt;
+
+        particle.life -= dt;
 
 
-        particle.life -=
-            dt;
+        if (particle.life <= 0) {
 
-
-        if (
-            particle.life <= 0
-        ) {
-
-            particles.splice(
-                i,
-                1
-            );
-
+            particles.splice(i, 1);
         }
     }
 }
 
 
-/* =========================================================
-   SHOOT TIMER
-========================================================= */
-
-function updateShooting(dt) {
-
-    shootTimer -=
-        dt * 1000;
-
-
-    if (
-        shootTimer <= 0
-    ) {
-
-        shoot();
-
-        shootTimer =
-            player.fireRate;
-    }
-}
-
-
-/* =========================================================
-   SPAWNING
-========================================================= */
-
-function updateSpawning(dt) {
-
-    spawnTimer -=
-        dt * 1000;
-
-
-    if (
-        spawnTimer <= 0
-    ) {
-
-        spawnEnemy();
-
-
-        /*
-           Spawn faster as score rises.
-
-           Starts around 750ms.
-           Eventually becomes extremely fast.
-        */
-
-        spawnTimer =
-            Math.max(
-                180,
-                750 -
-                score * 1.2
-            );
-    }
-}
-
-
-/* =========================================================
+/* =========================
    HUD
-========================================================= */
+========================= */
 
 function updateHUD() {
 
     scoreText.textContent =
-        "Score: " +
-        score;
+        "Score: " + score;
 
 
     levelText.textContent =
-        "Level " +
-        level;
+        "Level " + level;
 
 
-    const requiredXP =
+    const required =
         level * 100;
 
 
-    const percentage =
+    xpBar.style.width =
         Math.min(
             100,
-            (xp / requiredXP) *
-            100
-        );
+            (xp / required) * 100
+        ) + "%";
 
 
-    xpBar.style.width =
-        percentage + "%";
+    difficultyText.textContent =
+        "Difficulty: " +
+        getDifficultyName();
 }
 
 
-/* =========================================================
-   DRAW GRID
-========================================================= */
+/* =========================
+   BACKGROUND
+========================= */
 
 function drawBackground() {
 
@@ -1343,8 +1155,7 @@ function drawBackground() {
 
 
     ctx.strokeStyle =
-        "#111b2a";
-
+        "#111a28";
 
     ctx.lineWidth = 1;
 
@@ -1357,15 +1168,9 @@ function drawBackground() {
 
         ctx.beginPath();
 
-        ctx.moveTo(
-            x,
-            0
-        );
+        ctx.moveTo(x, 0);
 
-        ctx.lineTo(
-            x,
-            600
-        );
+        ctx.lineTo(x, 600);
 
         ctx.stroke();
     }
@@ -1379,24 +1184,18 @@ function drawBackground() {
 
         ctx.beginPath();
 
-        ctx.moveTo(
-            0,
-            y
-        );
+        ctx.moveTo(0, y);
 
-        ctx.lineTo(
-            800,
-            y
-        );
+        ctx.lineTo(800, y);
 
         ctx.stroke();
     }
 }
 
 
-/* =========================================================
+/* =========================
    DRAW
-========================================================= */
+========================= */
 
 function draw() {
 
@@ -1405,11 +1204,11 @@ function draw() {
 
     /* BULLETS */
 
+    ctx.fillStyle =
+        "#4deaff";
+
+
     for (const bullet of bullets) {
-
-        ctx.fillStyle =
-            "#4deaff";
-
 
         ctx.beginPath();
 
@@ -1434,23 +1233,19 @@ function draw() {
         ) {
 
             ctx.fillStyle =
-                "#ff3b6b";
+                "#ff416c";
 
-        }
-
-        else if (
+        } else if (
             enemy.type === "tank"
         ) {
 
             ctx.fillStyle =
-                "#a855f7";
+                "#9b5cff";
 
-        }
-
-        else {
+        } else {
 
             ctx.fillStyle =
-                "#ff6b4a";
+                "#ff704d";
         }
 
 
@@ -1467,9 +1262,7 @@ function draw() {
         ctx.fill();
 
 
-        /*
-           Enemy health indicator
-        */
+        /* Health bar for tanks */
 
         if (
             enemy.health > 1
@@ -1481,7 +1274,7 @@ function draw() {
 
             ctx.fillRect(
                 enemy.x - 15,
-                enemy.y - enemy.radius - 10,
+                enemy.y - enemy.radius - 9,
                 30,
                 4
             );
@@ -1500,7 +1293,7 @@ function draw() {
 
             ctx.fillRect(
                 enemy.x - 15,
-                enemy.y - enemy.radius - 10,
+                enemy.y - enemy.radius - 9,
                 healthWidth,
                 4
             );
@@ -1527,9 +1320,7 @@ function draw() {
     ctx.fill();
 
 
-    /*
-       Player health bar
-    */
+    /* PLAYER HEALTH */
 
     ctx.fillStyle =
         "#202938";
@@ -1567,7 +1358,7 @@ function draw() {
         ctx.globalAlpha =
             Math.max(
                 0,
-                particle.life / .5
+                particle.life / 0.4
             );
 
 
@@ -1588,9 +1379,9 @@ function draw() {
 }
 
 
-/* =========================================================
+/* =========================
    GAME OVER
-========================================================= */
+========================= */
 
 function gameOver() {
 
@@ -1608,11 +1399,13 @@ function gameOver() {
 
     message.innerHTML =
         `
-        Final Score:
-        <strong>${score}</strong>
-        <br><br>
-        Reached Level:
-        <strong>${level}</strong>
+        Score: <strong>${score}</strong>
+        <br>
+        Level: <strong>${level}</strong>
+        <br>
+        Difficulty: <strong>
+        ${getDifficultyName()}
+        </strong>
         `;
 
 
@@ -1631,9 +1424,9 @@ function gameOver() {
 }
 
 
-/* =========================================================
-   MAIN LOOP
-========================================================= */
+/* =========================
+   GAME LOOP
+========================= */
 
 function gameLoop(time) {
 
@@ -1644,12 +1437,13 @@ function gameLoop(time) {
     const dt =
         Math.min(
             0.033,
-            (time - lastTime) /
-            1000
+            (time - lastTime) / 1000
         );
 
 
     lastTime = time;
+
+    gameTime += dt;
 
 
     updatePlayer(dt);
@@ -1675,9 +1469,9 @@ function gameLoop(time) {
 }
 
 
-/* =========================================================
-   START BUTTON
-========================================================= */
+/* =========================
+   BUTTON
+========================= */
 
 startButton.addEventListener(
     "click",
@@ -1685,9 +1479,9 @@ startButton.addEventListener(
 );
 
 
-/* =========================================================
+/* =========================
    INITIALIZE
-========================================================= */
+========================= */
 
 resetGame();
 
